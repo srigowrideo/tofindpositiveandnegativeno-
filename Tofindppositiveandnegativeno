@@ -1,0 +1,25 @@
+COUNT      EQU   05H
+DATA       SEGMENT 
+           NUMAR   DW 1234H,5678H,2346H,0526H,5926H
+           POS_N   DB   0H 
+           NEG_N   DB   0H 
+DATA       ENDS 
+CODE       SEGMENT 
+ASSUME     CS:CODE,DS:DATA
+START:     MOV AX,DATA
+           MOV DS,AX
+           MOV CL,COUNT 
+           MOV SI, OFFSET NUMAR 
+AGAIN :    MOV AX,[SI]
+           RCL ,AX,01 
+           JC NEG 
+           INC POS_N 
+           JMP NEXT 
+NEG :      INC  NEG _N
+NEXT :     ADD SI,02 
+           DEC CL 
+           JNZ AGAIN 
+           MOV AH,4CH 
+           INT 21H 
+  CODE     ENDS 
+           END START 
